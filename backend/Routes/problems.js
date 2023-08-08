@@ -1,38 +1,36 @@
 const express = require("express");
 const Problems = require("../schemas/problemSchema");
-
+const mongoose = require("mongoose");
 const router = express.Router();
 
 // GET all problems
-router.get("/", (req, res) => {
-  res.json({ mssg: "GET all workouts" });
-});
-
-// GET a single workout
-router.get("/:id", (req, res) => {
-  res.json({ mssg: "GET a single workout" });
-});
-
-// POST a new workout
-router.post("/", async (req, res) => {
-  const { title, load, reps } = req.body;
-
+router.get("/", async (req, res) => {
   try {
-    const workout = await Workout.create({ title, load, reps });
-    res.status(200).json(workout);
+    const problems = await Problems.find({});
+    res.status(200).json(problems);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// DELETE a workout
-router.delete("/:id", (req, res) => {
-  res.json({ mssg: "DELETE a workout" });
-});
+// GET a single problem
+router.get("/:id", async (req, res) => {
+  // res.json({ mssg: "GET a single workout" });
+  const { id } = req.params;
 
-// UPDATE a workout
-router.patch("/:id", (req, res) => {
-  res.json({ mssg: "UPDATE a workout" });
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(400)
+      .json({ error: "Id not valid, no such problem found." });
+  }
+
+  const problem = await Problems.findById(id);
+
+  if (!problem) {
+    return res.status(404).json({ eror: "No problem with provises id found" });
+  }
+
+  res.status(200).json(problem);
 });
 
 module.exports = router;

@@ -1,18 +1,28 @@
-import { Route, Routes } from "react-router-dom";
-// import "./styles/App.css";
-import Loginpage from "./components/loginpage.js";
-import Homepage from "./components/homepage.js";
-// import Problem from "./components/problem";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Loginpage from "./pages/loginpage.js";
+import Homepage from "./pages/homepage.js";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
-    <>
-      <Routes>
-        <Route exact path="/login" element={<Loginpage />} />
-        <Route path="/homepage" element={<Homepage />} />
-        {/* <Route path="/problem/:id" element={<Problem />} /> */}
-      </Routes>
-    </>
+    <div className="App">
+      <BrowserRouter>
+        <NavBar />
+        <div className="pages">
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </div>
   );
 }
 export default App;
+
+{
+  /* <Routes>
+        <Route exact path="/login" element={<Loginpage />} />
+        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/problem/:id" element={<Problem />} />
+</Routes> */
+}

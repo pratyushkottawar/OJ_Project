@@ -7,7 +7,7 @@ require("./auth");
 require("dotenv").config();
 var session = require("express-session");
 
-const problemSchema = require("./schemas/problemSchema");
+const problemsRoutes = require("./Routes/problems");
 
 // Middleware
 const app = express();
@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
   res.json({ online: "compiler" });
 });
 
-app.use("/problems", probemsRoutes);
+app.use("/problems", problemsRoutes);
 
 // Connecting to MongoDB and listening to requirements
 mongoose
