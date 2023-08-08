@@ -2,14 +2,21 @@ const express = require("express");
 const passport = require("passport");
 const cors = require("cors");
 const path = require("path");
-const app = express();
+const mongoose = require("mongoose");
 require("./auth");
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "client")));
-
-app.use(cors());
+require("dotenv").config();
 var session = require("express-session");
 
+const problemSchema = require("./schemas/problemSchema");
+
+// Middleware
+const app = express();
+app.use(express.json());
+app.use(cors());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.static(path.join(__dirname, "client")));
+
+// Middleware for Authentication
 app.use(
   session({
     secret: "mysecret",
@@ -36,7 +43,20 @@ app.get(
   }
 );
 
-//listen for equirements
-app.listen(5000, () => {
-  console.log("Listening on port 5000");
+app.get("/", (req, res) => {
+  res.json({ online: "compiler" });
 });
+
+app.use("/problems", probemsRoutes);
+
+// Connecting to MongoDB and listening to requirements
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(5000, () => {
+      console.log("MONGODB connected and  server is running on port 5000");
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
