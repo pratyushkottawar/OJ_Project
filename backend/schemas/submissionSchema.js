@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const submissionSchema = new Schema(
   {
-    problemId: {
+    pid: {
       type: String,
       required: true,
     },
